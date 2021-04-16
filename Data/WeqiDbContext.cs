@@ -5,12 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using weqi_store_api.Models.DTOs;
+using weqi_store_api.Models.Entities;
 
 namespace weqi_store_api.Data
 {
     public class WeqiDbContext : IdentityDbContext
     {
         public virtual DbSet<RefreshTokens> RefreshTokens { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductImage> ProductImages { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ProductImage>()
+                .HasKey(p => new { p.imageId, p.productId });
+                
+        }
+
+
         public WeqiDbContext(DbContextOptions<WeqiDbContext> options) : base(options) {
 
             

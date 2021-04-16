@@ -32,7 +32,8 @@ namespace weqi_store_api.Controllers
             UserManager<IdentityUser> userManager,
             IOptionsMonitor<JwtConfig> optrionsMonitor,
             TokenValidationParameters tokenParams,
-            WeqiDbContext weqiDbContext) {
+            WeqiDbContext weqiDbContext)
+        {
             _userManager = userManager;
             _jwtConfig = optrionsMonitor.CurrentValue;
             _tokenValidationParams = tokenParams;

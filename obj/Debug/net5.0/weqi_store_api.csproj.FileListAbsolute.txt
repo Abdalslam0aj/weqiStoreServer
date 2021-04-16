@@ -69,3 +69,7 @@ E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\obj\Debug\net5.0\ref
 E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\obj\Debug\net5.0\weqi_store_api.pdb
 E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\obj\Debug\net5.0\weqi_store_api.genruntimeconfig.cache
 E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\obj\Debug\net5.0\weqi_store_api.csprojAssemblyReference.cache
+E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\bin\Debug\net5.0\Newtonsoft.Json.dll
+E:\projects\weqi_proj\backend\weqi_store_api\weqi_store_api\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

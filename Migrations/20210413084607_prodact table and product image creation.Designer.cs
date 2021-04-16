@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using weqi_store_api.Data;
 
 namespace weqi_store_api.Migrations
 {
     [DbContext(typeof(WeqiDbContext))]
-    partial class WeqiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210413084607_prodact table and product image creation")]
+    partial class prodacttableandproductimagecreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,11 +262,9 @@ namespace weqi_store_api.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("price")
@@ -273,30 +273,9 @@ namespace weqi_store_api.Migrations
                     b.Property<double>("sale")
                         .HasColumnType("float");
 
-                    b.Property<string>("videoUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("weqi_store_api.Models.Entities.ProductImage", b =>
-                {
-                    b.Property<string>("imageId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("productId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("imageId", "productId");
-
-                    b.HasIndex("productId");
-
-                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -357,17 +336,6 @@ namespace weqi_store_api.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("weqi_store_api.Models.Entities.ProductImage", b =>
-                {
-                    b.HasOne("weqi_store_api.Models.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("productId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

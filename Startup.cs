@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using weqi_store_api.Configuration;
 using weqi_store_api.Data;
 
+
 namespace weqi_store_api
 {
     public class Startup
@@ -63,7 +64,7 @@ namespace weqi_store_api
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<WeqiDbContext>();
-
+            services.AddControllers().AddNewtonsoftJson();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
