@@ -292,7 +292,7 @@ namespace weqi_store_api.Migrations
                     b.Property<string>("url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("imageId", "productId");
+                    b.HasKey("imageId");
 
                     b.HasIndex("productId");
 
@@ -362,12 +362,15 @@ namespace weqi_store_api.Migrations
             modelBuilder.Entity("weqi_store_api.Models.Entities.ProductImage", b =>
                 {
                     b.HasOne("weqi_store_api.Models.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("productId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("images")
+                        .HasForeignKey("productId");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("weqi_store_api.Models.Entities.Product", b =>
+                {
+                    b.Navigation("images");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,8 +10,8 @@ using weqi_store_api.Data;
 namespace weqi_store_api.Migrations
 {
     [DbContext(typeof(WeqiDbContext))]
-    [Migration("20210414192511_prodact table Images Fix Requierd 2")]
-    partial class prodacttableImagesFixRequierd2
+    [Migration("20210419184842_data base fix")]
+    partial class databasefix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -288,15 +288,20 @@ namespace weqi_store_api.Migrations
                     b.Property<string>("imageId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("productId")
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("imageId", "productId");
+                    b.HasKey("imageId", "ProductId");
 
-                    b.HasIndex("productId");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("ProductImages");
                 });
@@ -364,12 +369,21 @@ namespace weqi_store_api.Migrations
             modelBuilder.Entity("weqi_store_api.Models.Entities.ProductImage", b =>
                 {
                     b.HasOne("weqi_store_api.Models.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("productId")
+                        .WithMany("images")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("weqi_store_api.Models.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId1");
+
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("weqi_store_api.Models.Entities.Product", b =>
+                {
+                    b.Navigation("images");
                 });
 #pragma warning restore 612, 618
         }

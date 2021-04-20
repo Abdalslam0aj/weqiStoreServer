@@ -12,16 +12,17 @@ namespace weqi_store_api.Data
     public class WeqiDbContext : IdentityDbContext
     {
         public virtual DbSet<RefreshTokens> RefreshTokens { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<ProductImage> ProductImages { get; set; }
+        public  DbSet<Product> Products { get; set; }
+        public  DbSet<ProductImage> ProductImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); 
             modelBuilder.Entity<ProductImage>()
-                .HasKey(p => new { p.imageId, p.productId });
-                
+               .HasKey(p => new { p.imageId});
+
         }
+
 
 
         public WeqiDbContext(DbContextOptions<WeqiDbContext> options) : base(options) {

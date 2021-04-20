@@ -11,6 +11,9 @@ using weqi_store_api.Data;
 using weqi_store_api.Models.DTOs.Requests;
 using weqi_store_api.Models.DTOs.Responses;
 using weqi_store_api.Models.Entities;
+using Microsoft.Data;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace weqi_store_api.Controllers
 {
@@ -31,37 +34,47 @@ namespace weqi_store_api.Controllers
         [Route("GetProducts")]
         public IActionResult GetProducts(string search) {
             List<GetProductsResponse> getProducts = new List<GetProductsResponse>(){};
-            var products = _weqiDbContext.Products.ToList();
-            products.ForEach(p => {
-                GetProductsResponse product = new GetProductsResponse();
-                product.product = p;
-                product.ProductImages = _weqiDbContext.ProductImages.Where(e => e.productId == p.Id).ToList();
-                getProducts.Add(product);
-            });
-            
-           
-            if (getProducts.Count == 0)
-            {
-                return Ok("NO DATA");
-            }
-            return Ok(getProducts);
+            var products = _weqiDbContext.Products.Include(e => (e).images);
+            //products.ForEach(p => {
+            //    GetProductsResponse product = new GetProductsResponse();
+            //    product.product = p;
+            //    product.ProductImages = _weqiDbContext.ProductImages.Where(e => e.productId == p.Id).ToList();
+            //    getProducts.Add(product);
+            //});
+
+
+            //if (getProducts.Count == 0)
+            //{
+            //    return Ok("NO DATA");
+            //}
+          var ad=  JsonConvert.SerializeObject(products.ToList(), Formatting.Indented,
+         new JsonSerializerSettings()
+           {
+            ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+           }
+          );
+            return Ok(ad);
         }
 
         [HttpPost]
         [Route("AddProduct")]
         public async Task<IActionResult> AddProduct([FromBody] PostProductRequest product)
         {
-            Product savedProduct;
-            List<ProductImage> productImages = new List<ProductImage>() { };            
+            List<ProductImage> productImages = new List<ProductImage>() { };
+            Product savedProduct = new Product(product.name,product.price,product.description,product.sale,product.videoUrl
+                ,productImages);
+            
            
             try {
-                savedProduct =  _weqiDbContext.Products.Add(product.product).Entity;
+                
                 product.base64Images.ForEach(i => {                    
                    var savedProductImage =  ProductImage.SaveImage(i,savedProduct.Id);
                     productImages.Add(savedProductImage);
                 });
-               
-                await  _weqiDbContext.ProductImages.AddRangeAsync(productImages);
+               // savedProduct.images = productImages;
+               savedProduct = _weqiDbContext.Products.Add(savedProduct).Entity;
+
+               await  _weqiDbContext.ProductImages.AddRangeAsync(productImages);
                 _weqiDbContext.SaveChanges();
 
             } catch(Exception e) {

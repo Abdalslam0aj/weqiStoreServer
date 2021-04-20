@@ -12,20 +12,19 @@ namespace weqi_store_api.Models.Entities
     {
         [Required]
         public string imageId { set; get; }
-        [Required]
-        public string productId { set; get; }
         public string url { set; get; }
-
+        public string productId {set;get;}
         [ForeignKey(nameof(productId))]
-        public Product Product { get; set; }
+        public Product Product { set; get; }
 
 
-        public ProductImage(string imageId, string productId, string url)
+   
+ 
+        public ProductImage(string imageId, string url, string productId)
         {
             this.imageId = createImgId();
-            this.productId =  productId; 
+            this.productId = productId;
             this.url = url;
-        
         }
 
         private string createImgId()
@@ -46,7 +45,7 @@ namespace weqi_store_api.Models.Entities
         }
         public static ProductImage SaveImage(string ImgStr, string productId)
         {
-            var savedImage = new ProductImage(null, productId, "");
+            var savedImage = new ProductImage(null, "", productId);
 
             String path = Path.Combine(Directory.GetCurrentDirectory(), "/projects/weqi_proj/backend/weqi_store_api/weqi_store_api/ImageStorage/"+productId);
 
