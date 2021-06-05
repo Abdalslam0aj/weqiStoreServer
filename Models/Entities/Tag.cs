@@ -7,5 +7,6 @@ namespace weqi_store_api.Models.Entities
 {
     public class Tag
     {
+        public String tagName;
     }
 }

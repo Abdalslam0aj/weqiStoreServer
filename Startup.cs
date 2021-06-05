@@ -63,8 +63,8 @@ namespace weqi_store_api
             });
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<WeqiDbContext>();
-            services.AddControllers().AddNewtonsoftJson();
+                .AddEntityFrameworkStores<WeqiDbContext>();            
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

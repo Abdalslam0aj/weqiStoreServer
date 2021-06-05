@@ -32,28 +32,53 @@ namespace weqi_store_api.Controllers
 
         [HttpGet]
         [Route("GetProducts")]
-        public IActionResult GetProducts(string search) {
-            List<GetProductsResponse> getProducts = new List<GetProductsResponse>(){};
+        public IActionResult GetProducts(string search, int page, int size) {
+            List<GetProductsResponse> getProducts = new List<GetProductsResponse>() { };
             var products = _weqiDbContext.Products.Include(e => (e).images);
-            //products.ForEach(p => {
-            //    GetProductsResponse product = new GetProductsResponse();
-            //    product.product = p;
-            //    product.ProductImages = _weqiDbContext.ProductImages.Where(e => e.productId == p.Id).ToList();
-            //    getProducts.Add(product);
-            //});
-
-
             //if (getProducts.Count == 0)
             //{
             //    return Ok("NO DATA");
             //}
-          var ad=  JsonConvert.SerializeObject(products.ToList(), Formatting.Indented,
-         new JsonSerializerSettings()
-           {
-            ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-           }
-          );
-            return Ok(ad);
+            int boundedPage = 0;
+            int boundedSize = 0;
+
+            var bounds = products.ToList().Count;
+            if ((page * size) + size <= bounds)
+            {
+                boundedPage = page * size;
+                boundedSize = size;
+
+            }
+            else if ((page * size) + size > bounds && bounds > (page * size))
+            {
+                boundedPage = page * size;
+                boundedSize = bounds - boundedPage;
+
+            }
+            else {
+
+                return Ok(new List<Product>());
+            
+            }
+            if (search == null) {
+                return Ok(products.ToList().GetRange(boundedPage, boundedSize));
+            } else {
+                Dictionary<string,Product> searchedProducts = new Dictionary<string,Product>();
+
+                products.ToList().ForEach(e =>
+                {
+                    if (e.name.Contains(search))
+                        searchedProducts[e.Id] = e;
+                    if(e.name.StartsWith(search))
+                        searchedProducts[e.Id] = e;
+                    if (e.name.EndsWith(search))
+                        searchedProducts[e.Id] = e;
+
+                });
+                return Ok(searchedProducts.ToList().GetRange((page * size),size));
+            }
+        
+           
         }
 
         [HttpPost]
